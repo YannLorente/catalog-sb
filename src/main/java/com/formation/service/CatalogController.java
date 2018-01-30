@@ -2,7 +2,7 @@ package com.formation.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.formation.dao.ICatalogDAO;
+import com.formation.dao.ICatalogRepository;
 import com.formation.domain.Cat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
@@ -21,7 +21,7 @@ public class CatalogController {
         private static final Logger LOG = Logger.getLogger(CatalogController.class.getSimpleName());
 
         @Autowired
-        private ICatalogDAO catalogService;
+        private ICatalogRepository catalogService;
 
         @Autowired
         private CounterService counterService;
@@ -69,7 +69,6 @@ public class CatalogController {
         @RequestMapping(method = RequestMethod.GET, produces = "application/json")
         public List<Cat> getCats() {
             counterService.increment("api.cats");
-
             return catalogService.get().orElse(new ArrayList<>());
         }
 }

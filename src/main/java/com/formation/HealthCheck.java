@@ -1,6 +1,6 @@
 package com.formation;
 
-import com.formation.dao.ICatalogDAO;
+import com.formation.dao.ICatalogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HealthCheck implements HealthIndicator {
     @Autowired
-    private ICatalogDAO catalogService;
+    private ICatalogRepository catalogService;
 
     @Override
     public Health health() {

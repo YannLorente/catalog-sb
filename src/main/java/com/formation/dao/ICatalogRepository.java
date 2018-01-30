@@ -5,7 +5,7 @@ import com.formation.domain.Cat;
 import java.util.List;
 import java.util.Optional;
 
-public interface ICatalogDAO {
+public interface ICatalogRepository {
     String getCatalogName();
 
     Cat add(Cat newItem);

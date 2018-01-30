@@ -1,0 +1,52 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+
+		classpath('se.transmode.gradle:gradle-docker:1.2')
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'docker'
+
+group = 'com.formation.example'
+version = '1.0'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+dependencies {
+	compile 'io.prometheus:simpleclient_spring_boot:0.0.21'
+	compile 'io.prometheus:simpleclient_servlet:0.0.21'
+	compile 'io.prometheus:simpleclient_hotspot:0.0.21'
+
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-actuator')
+
+	compile 'de.codecentric:spring-boot-admin-starter-client:1.5.1'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+	baseImage = 'develar/java:latest'
+	maintainer = 'Y Lorente "yann.lorente@docdoku.com"'
+	push = project.hasProperty('push')
+	addFile {
+		from jar
+		rename {'app.jar'}
+	}
+	entryPoint(['java', '-Djava.security.egd=file:/dev/./urandom', '-jar', '/app.jar'])
+}
+
+
+
